@@ -1,42 +1,40 @@
 package com.jakubwawak.entrc_api;
 
-import java.util.Date;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class EntrcApi_Logger {
 
-    Date start_time;
-    String header = " -> ENTRCAPI ";
+    Date actual_time;
+    String HEADER = "ENTRCAPI ";
     ArrayList<String> data;
 
-    int debug = 0;
+    int debug;
 
     /**
-     * Constructor
+     * Constructor for the object
      * @param version
+     * @param debug
      */
-    public EntrcApi_Logger(String version){
-        start_time = new Date();
-        header = header + version;
-        header = header + " |";
-        data = new ArrayList<>();
+    EntrcApi_Logger(String version, int debug){
+        HEADER = HEADER + version +" |";
+        this.debug = debug;
+        actual_time = null;
+        data = new ArrayList();
     }
 
     /**
-     * Function for adding data to log
-     * @param entrc_api_code
+     * Function for adding log to object
      * @param data
      */
-    public void add(String entrc_api_code,String data){
-        String content = header + "("+entrc_api_code+") "+data;
+    void add(String data){
+        actual_time = new Date();
+        String content = HEADER + actual_time.toString()+"| "+data;
         this.data.add(content);
         if ( debug == 1){
             System.out.println(content);
         }
     }
-
-
-
 
 
 }

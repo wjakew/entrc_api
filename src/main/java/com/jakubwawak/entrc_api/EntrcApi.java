@@ -11,15 +11,17 @@ public class EntrcApi {
 
 	final static String version = "v.1.0.0A1";
 	public static Database_Connector database;
+	static int debug = 1;
+	static EntrcApi_Logger eal;
 
-	public static void main(String[] args) {
-
+	public static void main(String[] args){
 		show_header();
+		eal = new EntrcApi_Logger(version,debug);
 
 		try{
 			database = new Database_Connector();
 
-			database.connect("localhost","entrc_database","entrc_admin","password");
+			database.connect("192.168.1.100","entrc_database","entrc_admin","password");
 
 			if ( database.connected ){
 				System.out.println("Database connected!\n Running server...");
