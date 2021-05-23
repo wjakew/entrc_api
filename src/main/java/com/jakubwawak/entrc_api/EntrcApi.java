@@ -9,7 +9,7 @@ import java.sql.SQLException;
 @SpringBootApplication
 public class EntrcApi {
 
-	final static String version = "v.1.0.0A1";
+	final static String version = "v.1.0.0A2";
 	public static Database_Connector database;
 	static int debug = 1;
 	static EntrcApi_Logger eal;
@@ -21,7 +21,7 @@ public class EntrcApi {
 		try{
 			database = new Database_Connector();
 
-			database.connect("192.168.1.100","entrc_database","entrc_admin","password");
+			database.connect("localhost","entrc_database","root","password");
 
 			if ( database.connected ){
 				System.out.println("Database connected!\n Running server...");
@@ -45,7 +45,7 @@ public class EntrcApi {
 						"|  _| | '_ \\| __| '__/ __| / _ \\ | |_) | |\n" +
 						"| |___| | | | |_| | | (__ / ___ \\|  __/| |\n" +
 						"|_____|_| |_|\\__|_|  \\___/_/   \\_\\_|  |___|\n";
-		header = header+"by JAKUB WAWAK       2021            "+version+"\n";
+		header = header+"by JAKUB WAWAK       2021         "+version+"\n";
 		System.out.println(header);
 	}
 

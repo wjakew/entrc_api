@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class Authorization_Handler {
 
     @GetMapping("/auth")
+    // /auth?appcode=XXXX
     public Authorization authorization(@RequestParam(value = "appcode",defaultValue = "blank") String appcode){
+        EntrcApi.eal.add("REQUEST: Got data: appcode("+appcode+")");
         return new Authorization(appcode);
     }
 }
