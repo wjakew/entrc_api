@@ -14,6 +14,6 @@ public class Barcode_Handler {
     @GetMapping("/barcodes/{appcode}/{pin}")
     public Barcode_Object retrive_barcode(@PathVariable String appcode, @PathVariable String pin) throws SQLException {
         EntrcApi.eal.add("REQUEST: Got data: appcode("+appcode+") pin("+pin+")");
-        return new Barcode_Object(appcode,pin);
+        return new Barcode_Object(pin,appcode);
     }
 }

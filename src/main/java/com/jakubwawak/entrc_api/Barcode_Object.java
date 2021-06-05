@@ -22,6 +22,7 @@ public class Barcode_Object {
 
     boolean check_auth(String appcode){
         Authorization auth = new Authorization(appcode);
+        EntrcApi.eal.add("REQUEST AUTH: "+auth.getEntrc_api_data());
         return auth.getEntrc_api_data() > 0;
     }
 
@@ -50,7 +51,7 @@ public class Barcode_Object {
             }
         }
         else{
-            barcode = "blank";
+            barcode = "noauth";
         }
 
     }

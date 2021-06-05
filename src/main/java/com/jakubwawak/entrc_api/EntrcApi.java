@@ -24,7 +24,7 @@ public class EntrcApi {
 			database.connect("localhost","entrc_database","root","password");
 
 			if ( database.connected ){
-				System.out.println("Database connected!\n Running server...");
+				System.out.println("Database connected!\nRunning server...");
 				SpringApplication.run(EntrcApi.class, args);
 			}
 			else{

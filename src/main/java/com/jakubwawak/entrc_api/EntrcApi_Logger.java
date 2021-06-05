@@ -35,6 +35,4 @@ public class EntrcApi_Logger {
             System.out.println(content);
         }
     }
-
-
 }
