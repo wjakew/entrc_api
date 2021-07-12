@@ -5,6 +5,8 @@ all rights reserved
  */
 package com.jakubwawak.administrator;
 
+import com.jakubwawak.entrc_api.EntrcApi;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -12,6 +14,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.security.CodeSource;
 import java.util.ArrayList;
 
 /**
@@ -24,67 +27,74 @@ import java.util.ArrayList;
  * databasepass%
  */
 public class Configuration {
-    
+
     public String file_src = "";
     File configuration_file;
     BufferedReader file_reader;
-    
+
     // file data in variables
     public String ip, database, databaseuser,databasepass;
-    
+
     boolean ex_flag;
     public boolean prepared;
-    
+    String current_path;
     ArrayList<String> file_lines;
-    
+
     //Constructor
     public Configuration(String configuration_src) throws FileNotFoundException, IOException, URISyntaxException{
         file_src = configuration_src;
         file_lines = new ArrayList<>();
         System.out.println("\nWyszukiwanie konfiguracji w:");
-        System.out.println(new java.io.File(".").getCanonicalPath());
+        CodeSource e = EntrcApi.class.getProtectionDomain().getCodeSource();
+        current_path = new File(e.getLocation().toURI().getPath()).getParentFile().getPath();
+        System.out.println("Aktualna lokalizacja kodu: "+current_path);
+        System.out.println("Otrzymana sciezka pliku: "+configuration_src);
         run();
+        System.out.println("Aktualna konfiguracja:");
+        show_configuration();
+        System.out.println("----------------------");
     }
     // Constructor without arguments
     Configuration() throws IOException{
-        file_src = "config.txt";
+        file_src = current_path + "\\config.entrconf";
         file_lines = new ArrayList<>();
         System.out.println("\nZainicjalizowano bez sciezki");
     }
-    
+
     /**
      * Function for coping new configuration file to the current app folder
      */
     public void copy_configuration() throws IOException{
-        FileWriter writer = new FileWriter("config.txt");
+        FileWriter writer = new FileWriter("config.entrconf");
         writer.write("ip%"+ip+"\n");
         writer.write("database%"+database+"\n");
         writer.write("databaseuser%"+databaseuser+"\n");
         writer.write("databasepass%"+databasepass+"\n");
         writer.close();
     }
-    
-    
+
+
     /**
      * Function for preparing main data for the object
      */
     public void run() throws FileNotFoundException, IOException{
         configuration_file = new File(file_src);
-        
+
         if ( configuration_file.exists() && !configuration_file.isDirectory()){
             ex_flag = true;
             // we found the file
             file_reader = new BufferedReader(new FileReader(file_src));
             get_lines(); //loading lines from file
-            
+
             //show_file();
-            
+
             if ( validate() ){
                 ip = file_lines.get(0).split("%")[1];
                 database = file_lines.get(1).split("%")[1];
                 databaseuser = file_lines.get(2).split("%")[1];
                 databasepass = file_lines.get(3).split("%")[1];
                 prepared = true;
+                System.out.println("Plik prawidłowy");
             }
             else{
                 prepared = false;
@@ -94,7 +104,7 @@ public class Configuration {
             ex_flag = false;
         }
     }
-    
+
     /**
      * Function for showing raw file
      */
@@ -104,7 +114,7 @@ public class Configuration {
             System.out.println(line);
         }
     }
-    
+
     /**
      * Function for getting lines from file
      * @return ArrayList
@@ -114,9 +124,9 @@ public class Configuration {
         while( line!= null){
             file_lines.add(line);
             line = file_reader.readLine();
-        }  
+        }
     }
-    
+
     /**
      * Function for validation data from file
      * @return boolean
@@ -127,7 +137,7 @@ public class Configuration {
         }
         return false;
     }
-    
+
     /**
      * Function for showing configuration
      */

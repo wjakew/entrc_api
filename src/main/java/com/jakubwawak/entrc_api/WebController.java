@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class WebController {
 
-    @RequestMapping("/")
+    @RequestMapping("/admin")
     @ResponseBody
-    public String index() {
-        return "That's pretty basic!";
+    public String admin() {
+        return "Welcome on the admin page!";
     }
+
+    @RequestMapping("/worker")
+    @ResponseBody
+    public String worker(){return "Welcome on the worker page!";}
 
 }

@@ -35,9 +35,14 @@ public class Barcode_Object {
                 Database_BarcodeGenerator dbg = new Database_BarcodeGenerator(EntrcApi.database);
                 Database_Worker dw = new Database_Worker(EntrcApi.database);
                 int worker_id = dw.get_worker_id_bypin(pin);
-
+                EntrcApi.eal.add("Loaded worker (id"+worker_id+")");
                 if ( worker_id > 0 ){
-                    barcode = dbg.retrive_barecode(worker_id).raw_barecode_data;
+                    if (dbg.check_barcode_exist(worker_id) == 1){
+                        barcode = dbg.retrive_barecode(worker_id).raw_barecode_data;
+                    }
+                    else{
+                        barcode = "nobarcode";
+                    }
                 }
                 else if ( worker_id == -1 ){
                     barcode = "error";
@@ -45,7 +50,7 @@ public class Barcode_Object {
                 else{
                     barcode = "noworker";
                 }
-
+                EntrcApi.eal.add("Barcode returned: "+barcode);
             }catch(SQLException e){
                 EntrcApi.eal.add("Failed to load barcode to database ("+e.toString()+")");
             }

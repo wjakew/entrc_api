@@ -18,6 +18,14 @@ public class Database_APIController {
     }
 
     /**
+     * Function for logging data to database
+     * @param data_to_log
+     */
+    public void log(String data_to_log) throws SQLException {
+        database.log_event(data_to_log,"ENTRC_API");
+    }
+
+    /**
      * Function for getting worker id by given login and PIN
      * @param login
      * @param pin

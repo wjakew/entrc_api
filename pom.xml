@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.jakubwawak</groupId>
 	<artifactId>entrc_api</artifactId>
-	<version>1.0.0A1</version>
+	<version>1.0.0B2</version>
 	<name>entrc_api</name>
 	<description>REST Api for ENTRC Program</description>
 	<properties>
