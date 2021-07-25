@@ -5,8 +5,6 @@ all rights reserved
  */
 package com.jakubwawak.administrator;
 
-import com.jakubwawak.entrc_api.EntrcApi;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +43,7 @@ public class Configuration {
         file_src = configuration_src;
         file_lines = new ArrayList<>();
         System.out.println("\nWyszukiwanie konfiguracji w:");
-        CodeSource e = EntrcApi.class.getProtectionDomain().getCodeSource();
+        CodeSource e = Configuration.class.getProtectionDomain().getCodeSource();
         current_path = new File(e.getLocation().toURI().getPath()).getParentFile().getPath();
         System.out.println("Aktualna lokalizacja kodu: "+current_path);
         System.out.println("Otrzymana sciezka pliku: "+configuration_src);

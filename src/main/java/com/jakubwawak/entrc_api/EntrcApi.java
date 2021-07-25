@@ -1,8 +1,14 @@
+/*
+by Jakub Wawak
+kubawawak@gmail.com
+all rights reserved
+ */
 package com.jakubwawak.entrc_api;
 
 import com.jakubwawak.administrator.Configuration;
 import com.jakubwawak.database.Database_APIController;
 import com.jakubwawak.database.Database_Connector;
+import com.jakubwawak.database.Database_ProgramCodes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -62,7 +68,17 @@ public class EntrcApi {
 				dac = new Database_APIController(database);
 				dac.log("ENTRC_API loaded on "+inetAddress.getHostAddress()+":8080");
 				System.out.println("Database connected!\nRunning server...");
-				SpringApplication.run(EntrcApi.class, args);
+				Database_ProgramCodes dpc = new Database_ProgramCodes(database);
+				System.out.println("Admin login requires to run API.");
+				// admin login in loop (Admin_Auth)
+				// admin asked about gui app (opens window in new thread)
+				if (dpc.get_value("API_ENABLED").equals("TRUE")) {
+					dac.log("ENTRC API ENABLED ON THAT DATABASE. LOADING SPRING");
+					SpringApplication.run(EntrcApi.class, args);
+				}
+				else{
+					dac.log("ENTRC API IS NOT ENABLED. TO ENABLE CHANGE SETTINGS IN ADMIN APP");
+				}
 			}
 			else{
 				System.out.println("Failed to connect to the database");
