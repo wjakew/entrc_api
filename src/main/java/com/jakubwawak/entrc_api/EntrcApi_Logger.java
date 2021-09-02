@@ -27,7 +27,7 @@ public class EntrcApi_Logger {
      * Function for adding log to object
      * @param data
      */
-    void add(String data){
+    public void add(String data){
         actual_time = new Date();
         String content = HEADER + actual_time.toString()+"| "+data;
         this.data.add(content);

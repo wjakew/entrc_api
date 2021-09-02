@@ -18,18 +18,21 @@ import java.net.InetAddress;
 
 import java.net.URISyntaxException;
 import java.net.UnknownHostException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
 @SpringBootApplication
 public class EntrcApi {
 
-	final static String version = "v.1.0.0B2";
+	final static String version = "v.1.0.0B3";
 	public static Database_Connector database;
 	static int debug = 1;
-	static EntrcApi_Logger eal;
+	public static EntrcApi_Logger eal;
 	static Database_APIController dac;
 	static Scanner user_handler;
+	static Admin_Auth adm_auth;
+	static Scanner user_input;
 	public static void main(String[] args) throws UnknownHostException {
 		show_header();
 		eal = new EntrcApi_Logger(version,debug);
@@ -72,12 +75,27 @@ public class EntrcApi {
 				System.out.println("Admin login requires to run API.");
 				// admin login in loop (Admin_Auth)
 				// admin asked about gui app (opens window in new thread)
-				if (dpc.get_value("API_ENABLED").equals("TRUE")) {
-					dac.log("ENTRC API ENABLED ON THAT DATABASE. LOADING SPRING");
-					SpringApplication.run(EntrcApi.class, args);
+				user_input = new Scanner(System.in);
+				System.out.println("You need to use admin auth to run thi api");
+				System.out.print("admin_login: ");
+				String admin_login = user_input.nextLine();
+				System.out.print("password: ");
+				String admin_password = user_input.nextLine();
+				adm_auth = new Admin_Auth(admin_login,admin_password,database);
+				adm_auth.login();
+				if (adm_auth.logged){
+					System.out.println("Access authorized");
+					if (dpc.get_value("API_ENABLED").equals("TRUE")) {
+						dac.log("ENTRC API ENABLED ON THAT DATABASE. LOADING SPRING");
+						SpringApplication.run(EntrcApi.class, args);
+					}
+					else{
+						System.out.println("ENTRC API IS NOT ENABLED. TO ENABLE CHANGE SETTINGS IN ADMIN APP");
+						dac.log("ENTRC API IS NOT ENABLED. TO ENABLE CHANGE SETTINGS IN ADMIN APP");
+					}
 				}
 				else{
-					dac.log("ENTRC API IS NOT ENABLED. TO ENABLE CHANGE SETTINGS IN ADMIN APP");
+					System.out.println("Access not granted. Wrong password");
 				}
 			}
 			else{
@@ -93,6 +111,8 @@ public class EntrcApi {
 		} catch (URISyntaxException e) {
 			System.out.println("URI exception: "+e.toString());
 		} catch (ClassNotFoundException e) {
+			System.out.println("Class not found error: "+e.toString());
+		} catch (NoSuchAlgorithmException e) {
 			System.out.println("Class not found error: "+e.toString());
 		}
 	}

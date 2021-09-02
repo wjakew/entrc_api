@@ -23,7 +23,7 @@ import java.time.ZoneId;
 public class Database_Connector {
 
     // version of database
-    public final String version = "v0.1.1";
+    public final String version = "v0.1.2";
     public LocalDateTime run_time;
     // header for logging data
     // connection object for maintaing connection to the database
@@ -180,7 +180,39 @@ public class Database_Connector {
             log("Failed to get raw query: "+query+" ("+e.toString()+")");
             return null;
         }
+    }
 
+    /**
+     * Function for loading faceAPI log data
+     * @return
+     */
+    public ArrayList<String> load_faceAPI_log() throws SQLException{
+        ArrayList<String> data = new ArrayList<>();
+        /**
+         *  rec_api_data_id int AI PK
+         rec_api_data_filename varchar(200)
+         rec_api_data_time timestamp
+         rec_api_data_desc varchar(100)
+         rec_api_data_code
+         */
+        String query = "SELECT rec_api_data_code, rec_api_data_desc, rec_api_data_filename FROM REC_API_DATA ORDER BY id DESC\n" +
+                "LIMIT 50;";
+
+        try{
+            PreparedStatement ppst = con.prepareStatement(query);
+
+            ResultSet rs = ppst.executeQuery();
+
+            while(rs.next()){
+                data.add(rs.getString("rec_api_data_code")+": ["+rs.getString("rec_api_data_filename")+"] "+rs.getString("rec_api_data_desc"));
+            }
+        }catch(SQLException e){
+            log("Failed to load faceAPI log ("+e.toString()+")");
+        }
+        if (data.size() == 0 ){
+            data.add("Pusto");
+        }
+        return data;
     }
 
     /**
@@ -743,6 +775,26 @@ public class Database_Connector {
             return false;
         }
     }
+    /**
+     * Function for getting database version
+     * @return String
+     */
+    public String get_database_version() throws SQLException{
+        String query = "SELECT programcodes_value FROM PROGRAMCODES where programcodes_key = 'databaseversion';";
+        try{
+            PreparedStatement ppst = con.prepareStatement(query);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("programcodes_value");
+            }
+            return "brak";
+        }catch(SQLException e){
+            log("Failed to load database version ("+e.toString()+")");
+            return null;
+        }
+    }
 
     /**
      * Function for getting admin data in simple collection
@@ -895,7 +947,7 @@ public class Database_Connector {
     }
 
     /**
-     * Function for updating password 
+     * Function for updating password
      * @param password
      * @return integer
      * @throws SQLException

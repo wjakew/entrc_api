@@ -9,6 +9,7 @@ import com.jakubwawak.database.Database_Connector;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -213,7 +214,7 @@ public class Database_Guard_Timesheet {
      * @return String
      * @throws SQLException
      */
-    String get_hours(int entrc_guard_timesheet) throws SQLException{
+    public String get_hours(int entrc_guard_timesheet) throws SQLException{
         String query = "SELECT entrc_guard_starttime, entrc_guard_endtime FROM ENTRC_GUARD_TIMESHEET WHERE entrc_guard_timesheet = ?;";
 
         try{
@@ -230,5 +231,81 @@ public class Database_Guard_Timesheet {
             database.log("Failed to get hours from timesheet data ("+e.toString());
             return null;
         }
+    }
+
+    /**
+     * Function for getting start time
+     * @param entrc_guard_timesheet
+     * @return LocalDateTime
+     * @throws SQLException
+     */
+    public String get_start_time(int entrc_guard_timesheet) throws SQLException {
+        String query = "SELECT entrc_guard_starttime FROM ENTRC_GUARD_TIMESHEET WHERE entrc_guard_timesheet = ?;";
+
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setInt(1,entrc_guard_timesheet);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if ( rs.next() ){
+                return rs.getString("entrc_guard_starttime");
+            }
+            return null;
+        }catch(SQLException e){
+            database.log("Failed to get hours from timesheet data ("+e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * Function for getting end time
+     * @param entrc_guard_timesheet
+     * @return LocalDateTime
+     * @throws SQLException
+     */
+    public String get_end_time(int entrc_guard_timesheet) throws SQLException {
+        String query = "SELECT entrc_guard_endtime FROM ENTRC_GUARD_TIMESHEET WHERE entrc_guard_timesheet = ?;";
+
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setInt(1,entrc_guard_timesheet);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if ( rs.next() ){
+                return rs.getString("entrc_guard_endtime");
+            }
+            return null;
+        }catch(SQLException e){
+            database.log("Failed to get hours from timesheet data ("+e.toString());
+            return null;
+        }
+    }
+
+    /**
+     * Function for getting day pattern
+     * @param entrc_guard_timesheet
+     * @return String
+     */
+    public String get_day_pattern(int entrc_guard_timesheet) throws SQLException {
+        String query = "SELECT entrc_guard_daycodes FROM ENTRC_GUARD_TIMESHEET where entrc_guard_timesheet = ?;";
+
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+
+            ppst.setInt(1,entrc_guard_timesheet);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if(rs.next()){
+                return rs.getString("entrc_guard_daycodes");
+            }
+            return null;
+        }catch(SQLException e){
+            database.log("Failed to get day pattern ("+e.toString()+")");
+            return null;
+        }
+
     }
 }

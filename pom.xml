@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>com.jakubwawak</groupId>
 	<artifactId>entrc_api</artifactId>
-	<version>1.0.0B2</version>
+	<version>1.0.0B3</version>
 	<name>entrc_api</name>
-	<description>REST Api for ENTRC Program</description>
+	<description>API for ENTRC Program</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

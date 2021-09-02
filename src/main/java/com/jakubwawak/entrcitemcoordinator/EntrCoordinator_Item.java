@@ -159,7 +159,7 @@ public class EntrCoordinator_Item {
      * @return
      * @throws SQLException
      */
-    int remove_item_worker(int entrc_ic_item) throws SQLException{
+    public int remove_item_worker(int entrc_ic_item) throws SQLException{
         String query = "UPDATE ENTRC_IC_ITEM SET worker_id = -1 WHERE entrc_ic_item_id = ?;";
 
         try{

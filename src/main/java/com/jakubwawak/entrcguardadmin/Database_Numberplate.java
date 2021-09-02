@@ -7,6 +7,8 @@ package com.jakubwawak.entrcguardadmin;
 
 import com.jakubwawak.database.Database_Admin;
 import com.jakubwawak.database.Database_Connector;
+import com.jakubwawak.entrc_api.EntrcApi;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,7 +28,7 @@ public class Database_Numberplate {
      * Constructor
      * @param database
      */
-    Database_Numberplate(Database_Connector database){
+    public Database_Numberplate(Database_Connector database){
         this.database = database;
         dgl = new Database_Guard_Log(database);
     }
@@ -65,12 +67,36 @@ public class Database_Numberplate {
             return -1;
         }
     }
+
+    /**
+     * Function for checking numberplate
+     * @param numberplate
+     * @return Integer
+     */
+    public int check_numberplate(String numberplate){
+        String query = "SELECT entrc_guard_numberplates_id from ENTRC_GUARD_NUMBERPLATES where entrc_guard_numberplates_data = ?;";
+
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setString(1,numberplate);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if (rs.next()){
+                return rs.getInt("entrc_guard_numberplates_id");
+            }
+            return 0;
+        } catch (SQLException e) {
+            EntrcApi.eal.add("Failed to get numberplate id ("+e.toString()+")");
+            return -1;
+        }
+    }
     /**
      * Function for getting
      * @param entrc_guard_numberplates_id
      * @return
      */
-    String get_owner(int entrc_guard_numberplates_id) throws SQLException{
+    public String get_owner(int entrc_guard_numberplates_id) throws SQLException{
         String query = "SELECT entrc_guard_user_category, user_id FROM ENTRC_GUARD_USER where entrc_guard_numberplates_id=?;";
         try{
 
@@ -103,6 +129,32 @@ public class Database_Numberplate {
             return "błąd";
         }
     }
+
+    /**
+     * Function for getting numberplates owner
+     * @param entrc_guard_numberplates_id
+     * @return ArrayList
+     */
+    public ArrayList get_owner_data(int entrc_guard_numberplates_id) throws SQLException {
+        String query = "SELECT entrc_guard_user_category, user_id FROM ENTRC_GUARD_USER where entrc_guard_numberplates_id=?;";
+        ArrayList<Integer> data = new ArrayList<>();
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setInt(1,entrc_guard_numberplates_id);
+
+            ResultSet rs = ppst.executeQuery();
+
+            if ( rs.next() ){
+                data.add(rs.getInt("entrc_guard_user_category"));
+                data.add(rs.getInt("user_id"));
+            }
+            return data;
+        } catch (SQLException e) {
+            database.log("Failed to get numberplates owner ("+e.toString()+")");
+            return null;
+        }
+    }
+
 
     /**
      * Function for adding owner
@@ -189,6 +241,28 @@ public class Database_Numberplate {
 
         }catch(SQLException e){
             database.log("Failed to add timesheet to numberplate ("+e.toString()+")");
+            return -1;
+        }
+    }
+
+    /**
+     * Function for getting timesheet
+     * @param entrc_guard_numberplates_id
+     * @return Integer
+     */
+    public int get_timesheet(int entrc_guard_numberplates_id) throws SQLException {
+        String query = "SELECT entrc_guard_timesheet from ENTRC_GUARD_ENTRANCE where entrc_guard_numberplates_id = ?;";
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setInt(1,entrc_guard_numberplates_id);
+            ResultSet rs = ppst.executeQuery();
+
+            if ( rs.next() ){
+                return rs.getInt("entrc_guard_timesheet");
+            }
+            return 0;
+        }catch(SQLException e){
+            database.log("Failed to get timesheet ("+e.toString()+")");
             return -1;
         }
     }
