@@ -3,18 +3,23 @@ package com.jakubwawak.entrc_api;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class WebController {
 
     @RequestMapping("/admin")
-    @ResponseBody
-    public String admin() {
-        return "Welcome on the admin page!";
+    public ModelAndView admin(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin");
+        return modelAndView;
     }
 
     @RequestMapping("/worker")
-    @ResponseBody
-    public String worker(){return "Welcome on the worker page!";}
+    public ModelAndView worker(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("worker");
+        return modelAndView;
+    }
 
 }

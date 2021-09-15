@@ -25,7 +25,7 @@ import java.util.Scanner;
 @SpringBootApplication
 public class EntrcApi {
 
-	final static String version = "v.1.0.0B3";
+	public final static String version = "v.1.0.0B4";
 	public static Database_Connector database;
 	static int debug = 1;
 	public static EntrcApi_Logger eal;
