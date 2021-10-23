@@ -1,7 +1,8 @@
-package com.jakubwawak.entrc_api;
+package com.jakubwawak.entrcitemcoordinator;
 
 import com.jakubwawak.database.Database_Connector;
 import com.jakubwawak.database.Database_Worker;
+import com.jakubwawak.entrc_api.EntrcApi;
 import com.jakubwawak.entrcitemcoordinator.Database_Item_Coordinator;
 import com.jakubwawak.entrcitemcoordinator.EntrCoordinator_Item;
 

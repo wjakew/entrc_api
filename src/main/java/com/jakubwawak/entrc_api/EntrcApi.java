@@ -12,6 +12,7 @@ import com.jakubwawak.database.Database_ProgramCodes;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.io.Console;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.InetAddress;
@@ -22,14 +23,15 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.Scanner;
 
-@SpringBootApplication
+@SpringBootApplication (scanBasePackages = {"com.jakubwawak"})
 public class EntrcApi {
 
-	public final static String version = "v.1.0.0B4";
+	public final static String version = "v.1.0.0";
+	public final static String build_number = "231021REV1";
 	public static Database_Connector database;
 	static int debug = 1;
 	public static EntrcApi_Logger eal;
-	static Database_APIController dac;
+	public static Database_APIController dac;
 	static Scanner user_handler;
 	static Admin_Auth adm_auth;
 	static Scanner user_input;
@@ -78,9 +80,17 @@ public class EntrcApi {
 				user_input = new Scanner(System.in);
 				System.out.println("You need to use admin auth to run thi api");
 				System.out.print("admin_login: ");
+				Console cnsl = System.console();
 				String admin_login = user_input.nextLine();
-				System.out.print("password: ");
-				String admin_password = user_input.nextLine();
+				String admin_password = "";
+				if ( cnsl == null ){
+					System.out.print("password: ");
+					admin_password = user_input.nextLine();
+				}
+				else{
+					System.out.print("password: ");
+					admin_password = String.valueOf(cnsl.readPassword());
+				}
 				adm_auth = new Admin_Auth(admin_login,admin_password,database);
 				adm_auth.login();
 				if (adm_auth.logged){
@@ -136,7 +146,7 @@ public class EntrcApi {
 						"|  _| | '_ \\| __| '__/ __| / _ \\ | |_) | |\n" +
 						"| |___| | | | |_| | | (__ / ___ \\|  __/| |\n" +
 						"|_____|_| |_|\\__|_|  \\___/_/   \\_\\_|  |___|\n";
-		header = header+"by JAKUB WAWAK       2021         "+version+"\n";
+		header = header+"by JAKUB WAWAK       2021         "+version+"/"+build_number+"\n";
 		System.out.println(header);
 		System.out.println("\n");
 		show_ipconfig();

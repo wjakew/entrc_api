@@ -5,6 +5,8 @@ all rights reserved
  */
 package com.jakubwawak.administrator;
 
+import com.jakubwawak.entrc_api.EntrcApi;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,17 +37,17 @@ public class Configuration {
 
     boolean ex_flag;
     public boolean prepared;
-    String current_path;
+    //String current_path;
     ArrayList<String> file_lines;
 
     //Constructor
     public Configuration(String configuration_src) throws FileNotFoundException, IOException, URISyntaxException{
         file_src = configuration_src;
         file_lines = new ArrayList<>();
+        prepared = false;
         System.out.println("\nWyszukiwanie konfiguracji w:");
-        CodeSource e = Configuration.class.getProtectionDomain().getCodeSource();
-        current_path = new File(e.getLocation().toURI().getPath()).getParentFile().getPath();
-        System.out.println("Aktualna lokalizacja kodu: "+current_path);
+        CodeSource e = EntrcApi.class.getProtectionDomain().getCodeSource();
+        //current_path = new File(e.getLocation().toURI().getPath()).getParentFile().getPath();
         System.out.println("Otrzymana sciezka pliku: "+configuration_src);
         run();
         System.out.println("Aktualna konfiguracja:");
@@ -53,9 +55,10 @@ public class Configuration {
         System.out.println("----------------------");
     }
     // Constructor without arguments
-    Configuration() throws IOException{
-        file_src = current_path + "\\config.entrconf";
+    public Configuration() throws IOException{
+        file_src = "config.entrconf";
         file_lines = new ArrayList<>();
+        prepared = false;
         System.out.println("\nZainicjalizowano bez sciezki");
     }
 
@@ -70,8 +73,6 @@ public class Configuration {
         writer.write("databasepass%"+databasepass+"\n");
         writer.close();
     }
-
-
     /**
      * Function for preparing main data for the object
      */

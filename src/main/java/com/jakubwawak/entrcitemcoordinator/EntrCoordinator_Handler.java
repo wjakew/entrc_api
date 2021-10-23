@@ -1,5 +1,6 @@
-package com.jakubwawak.entrc_api;
+package com.jakubwawak.entrcitemcoordinator;
 
+import com.jakubwawak.entrc_api.EntrcApi;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;

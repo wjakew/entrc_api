@@ -1,4 +1,4 @@
-package com.jakubwawak.entrc_api;
+package com.jakubwawak.maintanance;
 
 import com.jakubwawak.administrator.Health;
 import org.springframework.web.bind.annotation.GetMapping;
