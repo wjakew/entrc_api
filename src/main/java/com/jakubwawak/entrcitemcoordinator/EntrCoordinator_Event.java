@@ -1,6 +1,7 @@
 package com.jakubwawak.entrcitemcoordinator;
 
 import com.jakubwawak.database.Database_Connector;
+import com.jakubwawak.database.Database_Groups;
 import com.jakubwawak.database.Database_Worker;
 import com.jakubwawak.entrc_api.EntrcApi;
 import com.jakubwawak.entrcitemcoordinator.Database_Item_Coordinator;
@@ -42,6 +43,7 @@ public class EntrCoordinator_Event {
         this.worker_id = -1;
         this.shelf = shelf;
         this.item_id = -1;
+        authorization = "";
     }
 
     /**
@@ -51,15 +53,48 @@ public class EntrCoordinator_Event {
     public void authorize(Database_Connector database) throws SQLException {
         if( database.get_worker_data(worker_pin)!= null) {
             Database_Worker dw = new Database_Worker(database);
-            if ( dw.check_worker_graveyard(database.get_worker_id_bypin(worker_pin))!= null) {
-                EntrcApi.dac.log("WORKER id(" + database.get_worker_id_bypin(worker_pin) + ") authorized on shelf");
-                authorization = database.get_worker_data(worker_pin);
+            if ( dw.check_worker_graveyard(database.get_worker_id_bypin(worker_pin))== null) {
+                EntrcApi.dac.log("WORKER id(" + database.get_worker_id_bypin(worker_pin) + ") is not blocked on database.");
+                EntrcApi.eal.add("Checking group authorization...");
+                Database_Item_Coordinator dic = new Database_Item_Coordinator(database);
+                EntrCoordinator_Drawer ecd = new EntrCoordinator_Drawer(dic);
+                int entrc_ic_drawer_id = ecd.get_drawer_id(shelf);
+                if ( entrc_ic_drawer_id > 0){
+                    int user_groups_id = ecd.get_authorization_group_id(shelf);
+                    Database_Groups dg = new Database_Groups(database);
+                    switch(dg.check_user_group(database.get_worker_id_bypin(worker_pin),user_groups_id)){
+                        case 1:
+                        {
+                            // authorization granted by group linked with one of the drawers
+                            authorization = database.get_worker_data(worker_pin);
+                            EntrcApi.eal.add("USER "+authorization+" AUTHORIZED ON GROUP WITH DRAWER");
+                            break;
+                        }
+                        default:
+                        {
+                            // trying to authorize on EIC group
+                            if ( dg.check_user_group(database.get_worker_id_bypin(worker_pin),1) == 1){
+                                authorization = database.get_worker_data(worker_pin);
+                                EntrcApi.eal.add("USER "+authorization+" AUTHORIZED ON EIC GROUP");
+                                break;
+                            }
+                            else{
+                                authorization = "no_authorization";
+                            }
+                        }
+                    }
+                }
+                else{
+                    authorization = "no_shelf";
+                }
             }
             else{
+                EntrcApi.eal.add("User blocked on database. Shelf not granted");
                 authorization = "account_blocked";
             }
         }
         else{
+            EntrcApi.eal.add("Wrong pin. Shelf not granted - user not found");
             authorization = "no_auth";
         }
     }

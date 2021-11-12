@@ -37,7 +37,7 @@ public class Barcode_Object {
                 int worker_id = dw.get_worker_id_bypin(pin);
                 EntrcApi.eal.add("Loaded worker (id"+worker_id+")");
                 if ( worker_id > 0 ){
-                    if (dbg.check_barcode_exist(worker_id) == 1){
+                    if (dbg.check_barcode_exist(worker_id) > 0){
                         barcode = dbg.retrive_barecode(worker_id).raw_barecode_data;
                     }
                     else{

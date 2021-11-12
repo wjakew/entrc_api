@@ -67,6 +67,34 @@ public class EntrCoordinator_Drawer {
     }
 
     /**
+     * Function for getting group id of drawer
+     * @param drawer_code
+     * @return Integer
+     * @throws SQLException
+     */
+    public int get_authorization_group_id(String drawer_code) throws SQLException {
+        String query = "SELECT user_groups_id FROM USER_GROUPS where object_connected_id = ?;";
+        int entrc_ic_drawer_id = get_drawer_id(drawer_code);
+        if ( entrc_ic_drawer_id > 0 ){
+            try{
+                PreparedStatement ppst = dic.database.con.prepareStatement(query);
+                ppst.setInt(1,entrc_ic_drawer_id);
+                ResultSet rs = ppst.executeQuery();
+                if (rs.next()){
+                    return rs.getInt("user_groups_id");
+                }
+                return 1;
+            }catch(SQLException e){
+                dic.database.log("Failed to get drawer_id ("+e.toString()+")");
+                return -3;
+            }
+        }
+        else{
+            return -1;
+        }
+    }
+
+    /**
      * Function for checking drawer code if avaiable
      * @param code
      * @return boolean
@@ -90,6 +118,28 @@ public class EntrCoordinator_Drawer {
         }catch(SQLException e){
             dic.database.log("Failed to check drawer code ("+e.toString()+")");
             return false;
+        }
+    }
+
+    /**
+     * Function for getting drawer id by given drawer code
+     * @param drawer_code
+     * @return Integer
+     * @throws SQLException
+     */
+    int get_drawer_id(String drawer_code) throws SQLException {
+        String query = "SELECT entrc_ic_drawer_id FROM ENTRC_IC_DRAWER where entrc_ic_drawer_code = ?;";
+        try{
+            PreparedStatement ppst = dic.database.con.prepareStatement(query);
+            ppst.setString(1,drawer_code);
+            ResultSet rs = ppst.executeQuery();
+            if ( rs.next() ){
+                return rs.getInt("entrc_ic_drawer_id");
+            }
+            return -1;
+        } catch (SQLException throwables) {
+            dic.database.log("Failed to get drawer id ("+throwables.toString());
+            return -2;
         }
     }
 

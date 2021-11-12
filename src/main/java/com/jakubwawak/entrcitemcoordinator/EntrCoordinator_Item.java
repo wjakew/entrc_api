@@ -168,7 +168,7 @@ public class EntrCoordinator_Item {
             ppst.setInt(1,entrc_ic_item);
 
             ppst.execute();
-            dic.log_action("ITEM_RETURNED", "Item was set to drawer by admin", dic.database.admin_id, entrc_ic_item);
+            dic.log_action("ITEM_RETURNED", "Item was set to drawer by user", dic.database.admin_id, entrc_ic_item);
             return 1;
 
         }catch(SQLException e){

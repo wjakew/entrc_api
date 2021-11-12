@@ -22,4 +22,11 @@ public class WebController {
         return modelAndView;
     }
 
+    @RequestMapping("/help")
+    public ModelAndView help(){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("help");
+        return modelAndView;
+    }
+
 }

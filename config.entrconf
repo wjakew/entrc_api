@@ -1,4 +1,4 @@
 ip%localhost
 database%entrc_database
-databaseuser%entrc_admin
+databaseuser%root
 databasepass%password

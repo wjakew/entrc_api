@@ -26,7 +26,7 @@ public class Database_Connector {
     public final String version = "v0.1.2";
     public LocalDateTime run_time;
     // header for logging data
-    // connection object for maintaing connection to the database
+    // connection object for maintain connection to the database
     public Connection con;
 
     // variable for debug purposes
