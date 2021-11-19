@@ -1,0 +1,27 @@
+version: '3.3'
+services:
+  entrc_database:
+    image: mysql:5.7
+    volumes:
+      - database_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'entrc_database'
+
+      MYSQL_USER: 'entrc_admin'
+
+      MYSQL_PASSWORD: 'password'
+
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # ports exposed on the container
+      - '3306:3306'
+    expose:
+      # specified port for the database connection
+      - '3306'
+    # data section
+    volumes:
+      - "./entrc_database_make.sql :/docker-entrypoint-initdb.d/1.sql"
+# Names our volume
+volumes:
+  entrc_database-db:

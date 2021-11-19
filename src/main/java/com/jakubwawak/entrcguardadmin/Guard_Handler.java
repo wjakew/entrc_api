@@ -1,3 +1,8 @@
+/*
+by Jakub Wawak
+kubawawak@gmail.com
+all rights reserved
+ */
 package com.jakubwawak.entrcguardadmin;
 
 import org.springframework.web.bind.annotation.GetMapping;
