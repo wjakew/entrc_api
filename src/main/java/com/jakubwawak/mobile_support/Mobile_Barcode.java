@@ -26,7 +26,7 @@ public class Mobile_Barcode {
     public String barcode_raw_data;
     public boolean found;
     public boolean error;
-    String worker_pin;
+    public String worker_pin;
 
     /**
      * Constructor
@@ -49,6 +49,7 @@ public class Mobile_Barcode {
         try{
             Database_ProgramCodes dpc = new Database_ProgramCodes(EntrcApi.database);
             mobile_enabled = dpc.get_value("MOBILE_SUPPORT").equals("YES");
+            EntrcApi.eal.add("Mobile support state: "+mobile_enabled);
         }catch(Exception e){
             EntrcApi.eal.add("Error checking enabled ("+e.toString()+")");
             error = true;
@@ -60,16 +61,24 @@ public class Mobile_Barcode {
      * Function for retriving data from database
      */
     public void retrive() throws SQLException {
-        if ( found && !error ) {
+        if ( !error && mobile_enabled) {
             try{
                 Database_BarcodeGenerator dbg = new Database_BarcodeGenerator(EntrcApi.database);
                 Database_Worker dw = new Database_Worker(EntrcApi.database);
                 worker_id = dw.get_worker_id_bypin(worker_pin);
+                EntrcApi.eal.add("worker_id:"+worker_id);
                 if (worker_id > 0) {
                     found = true;
-                    BarCodeCreator barcode_object = dbg.retrive_barecode(worker_id);
-                    barcode_date = barcode_object.date;
-                    barcode_raw_data = barcode_object.raw_barecode_data;
+                    if(dbg.check_barcode_exist(worker_id) >= 0 ){
+                        BarCodeCreator barcode_object = dbg.retrive_barecode(worker_id);
+                        barcode_date = barcode_object.date;
+                        barcode_raw_data = barcode_object.raw_barecode_data;
+                    }
+                    else{
+                        barcode_date = null;
+                        barcode_raw_data = "blank";
+                    }
+
                 } else {
                     found = false;
                 }
