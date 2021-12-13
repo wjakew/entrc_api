@@ -26,8 +26,8 @@ import java.util.Scanner;
 @SpringBootApplication (scanBasePackages = {"com.jakubwawak"})
 public class EntrcApi {
 
-	public final static String version = "v.1.2.1";
-	public final static String build_number = "201121REV1";
+	public final static String version = "v.1.2.2";
+	public final static String build_number = "131221REV1";
 	public static Database_Connector database;
 	static int debug = 1;
 	public static EntrcApi_Logger eal;
