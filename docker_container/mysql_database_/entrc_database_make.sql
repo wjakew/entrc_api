@@ -2,7 +2,7 @@
 programmer Jakub Wawak
 all rights reserved
 kubawawak@gmail.com
-version v1.3.1
+version v1.3.2
 sql script that reloads ENTRCruntime database
 */
 CREATE DATABASE IF NOT EXISTS entrc_database;
@@ -453,7 +453,7 @@ VALUES
 INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES
-("DATABASEVERSION","131");
+("DATABASEVERSION","132");
 INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES
@@ -478,3 +478,7 @@ INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES
 ("MOBILE_SUPPORT","NO");
+INSERT INTO PROGRAMCODES
+(programcodes_key,programcodes_value)
+VALUES
+("SHELF_CODES","696969");

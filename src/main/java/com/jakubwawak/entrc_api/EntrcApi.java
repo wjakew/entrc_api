@@ -26,8 +26,8 @@ import java.util.Scanner;
 @SpringBootApplication (scanBasePackages = {"com.jakubwawak"})
 public class EntrcApi {
 
-	public final static String version = "v.1.2.2";
-	public final static String build_number = "131221REV1";
+	public final static String version = "v.1.2.4";
+	public final static String build_number = "151221REV1";
 	public static Database_Connector database;
 	static int debug = 1;
 	public static EntrcApi_Logger eal;
@@ -35,6 +35,12 @@ public class EntrcApi {
 	static Scanner user_handler;
 	static Admin_Auth adm_auth;
 	static Scanner user_input;
+
+	/**
+	 * Main program function
+	 * @param args
+	 * @throws UnknownHostException
+	 */
 	public static void main(String[] args) throws UnknownHostException {
 		show_header();
 		eal = new EntrcApi_Logger(version,debug);

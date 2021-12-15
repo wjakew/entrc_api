@@ -37,23 +37,39 @@ public class Database_APIController {
      */
     public int worker_login(String login,String pin) throws SQLException {
         String query = "SELECT worker_id FROM WORKER WHERE worker_login = ? and worker_pin = ?;";
-
         try{
             PreparedStatement ppst = database.con.prepareStatement(query);
-
             ppst.setString(1,login);
             ppst.setString(2,pin);
-
             ResultSet rs = ppst.executeQuery();
-
             if ( rs.next() ){
                 return rs.getInt("worker_id");
             }
             return 0;
-
         }catch(SQLException e){
             database.log("Failed to get worker_id by login and pin ("+e.toString());
             return -1;
+        }
+    }
+
+    /**
+     * Function for checking apicode on database
+     * @param api_code
+     * @return
+     */
+    public boolean check_apicode(String api_code) throws SQLException {
+        String query = "SELECT entrc_api_appcode FROM ENTRC_API_DATA where entrc_api_appcode = ?;";
+        try{
+            PreparedStatement ppst = database.con.prepareStatement(query);
+            ppst.setString(1,api_code);
+            ResultSet rs = ppst.executeQuery();
+            if ( rs.next() ){
+                return rs.getString("entrc_api_appcode").equals(api_code);
+            }
+            return false;
+        }catch(SQLException e){
+            database.log("Failed to check apicode ("+e.toString()+")");
+            return false;
         }
     }
 }

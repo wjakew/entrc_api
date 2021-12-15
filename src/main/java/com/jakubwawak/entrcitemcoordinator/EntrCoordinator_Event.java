@@ -1,3 +1,8 @@
+/*
+by Jakub Wawak
+kubawawak@gmail.com
+all rights reserved
+ */
 package com.jakubwawak.entrcitemcoordinator;
 
 import com.jakubwawak.database.Database_Connector;
