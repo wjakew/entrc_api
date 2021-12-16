@@ -27,6 +27,8 @@ public class EntrCoordinator_Event {
 
     public String item_get_code;
 
+    int flag;
+
     /**
      * Constructor for taking the item
      * @param worker_id
@@ -37,6 +39,7 @@ public class EntrCoordinator_Event {
         this.item_id = item_id;
         this.shelf = shelf;
         authorization = "";
+        flag = 0;
     }
 
     /**
