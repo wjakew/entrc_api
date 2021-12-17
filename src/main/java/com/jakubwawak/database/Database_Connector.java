@@ -30,7 +30,7 @@ public class Database_Connector {
     public Connection con;
 
     // variable for debug purposes
-    final int debug = 1;
+    public  int debug = 1;
 
     public boolean connected;                      // flag for checking connection to the database
     public String ip;                              // ip data for the connector

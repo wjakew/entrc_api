@@ -26,8 +26,8 @@ import java.util.Scanner;
 @SpringBootApplication (scanBasePackages = {"com.jakubwawak"})
 public class EntrcApi {
 
-	public final static String version = "v.1.2.5";
-	public final static String build_number = "161221REV1";
+	public final static String version = "v.1.2.6";
+	public final static String build_number = "171221REV1";
 	public static Database_Connector database;
 	static int debug = 1;
 	public static EntrcApi_Logger eal;
@@ -104,6 +104,8 @@ public class EntrcApi {
 					if (dpc.get_value("API_ENABLED").equals("TRUE")) {
 						dac.log("ENTRC API ENABLED ON THAT DATABASE. LOADING SPRING");
 						SpringApplication.run(EntrcApi.class, args);
+						Menu menu = new Menu();
+						menu.run();
 					}
 					else{
 						System.out.println("ENTRC API IS NOT ENABLED. TO ENABLE CHANGE SETTINGS IN ADMIN APP");

@@ -27,7 +27,7 @@ public class EntrCoordinator_Event {
 
     public String item_get_code;
 
-    int flag;
+    public int flag;
 
     /**
      * Constructor for taking the item
