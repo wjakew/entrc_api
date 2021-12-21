@@ -22,7 +22,9 @@ public class Drawer_Elements {
     private ArrayList<Item_Object> drawer_elements;
     public ArrayList<String> drawer_elements_glances;
     private Database_Connector database;
+    public boolean drawer_empty;
     public boolean error;
+    public boolean exists;
     /**
      * Constructor
      * @param entrc_ic_drawer_id
@@ -33,6 +35,7 @@ public class Drawer_Elements {
         drawer_elements_glances = new ArrayList<>();
         this.database = database;
         error = false;
+        drawer_empty = false;
     }
 
     /**
@@ -47,6 +50,9 @@ public class Drawer_Elements {
             while(rs.next()){
                 drawer_elements.add(new Item_Object(rs));
             }
+            if ( drawer_elements.size() == 0 )
+                this.drawer_empty = true;
+
             EntrcApi.eal.add("Created list of "+drawer_elements.size()+" drawer elements for entrc_ic_drawer_id: "+entrc_ic_drawer_id);
         }catch(SQLException e){
             EntrcApi.eal.add("Failed to load drawer list for entrc_ic_drawer_id");

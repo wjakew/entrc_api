@@ -481,4 +481,4 @@ VALUES
 INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES
-("SHELF_CODES","696969");
+("SHELF_CODES","696969,121212"); -- first value contains exit code, second window reload code

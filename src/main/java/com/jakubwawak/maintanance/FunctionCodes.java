@@ -34,7 +34,9 @@ public class FunctionCodes {
     public void load_current_codes() throws SQLException {
         Database_ProgramCodes dpc = new Database_ProgramCodes(EntrcApi.database);
         String raw_value = dpc.get_value("SHELF_CODES");
-        code1 = raw_value;
+        String[] codes = raw_value.split(",");
+        code1 = codes[0];
+        code2 = codes[1];
     }
 
 }

@@ -68,11 +68,14 @@ public class EntrCoordinator_Handler {
         int entrc_ic_drawer_id = ecd.get_drawer_id(shelf);
         Drawer_Elements de = new Drawer_Elements(entrc_ic_drawer_id,EntrcApi.database);
         if ( entrc_ic_drawer_id > 0){
+            de.exists = true;
             de.load_drawer_items();
             de.load_drawer_glances();
             return de;
         }
-        de.error = true;
+        else{
+            de.exists = false;
+        }
         return de;
     }
 

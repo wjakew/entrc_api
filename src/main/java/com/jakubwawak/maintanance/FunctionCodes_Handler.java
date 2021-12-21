@@ -11,7 +11,7 @@ import java.sql.SQLException;
 @RestController
 public class FunctionCodes_Handler {
 
-    @GetMapping("/entrc-function/{api_token}")
+    @GetMapping("/entrc-functioncodes/{api_token}")
     public FunctionCodes get_codes(@PathVariable String api_token) throws SQLException {
         FunctionCodes codes = new FunctionCodes();
         Database_APIController dac = new Database_APIController(EntrcApi.database);
