@@ -6,6 +6,9 @@ all rights reserved
 package com.jakubwawak.entrc_api;
 
 
+import com.jakubwawak.entrcitemcoordinator.Database_Item_Coordinator;
+import com.jakubwawak.entrcitemcoordinator.EntrCoordinator_Drawer;
+
 import java.sql.SQLException;
 import java.util.Scanner;
 

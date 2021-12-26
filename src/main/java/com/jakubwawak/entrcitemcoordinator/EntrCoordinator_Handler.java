@@ -79,6 +79,58 @@ public class EntrCoordinator_Handler {
         return de;
     }
 
+    @GetMapping("/entrcoordinator-item-status/{shelf}/{app_code}/{item_id}")
+    public EntrCoordinator_Event item_status(@PathVariable String shelf,@PathVariable String app_code,@PathVariable int item_id) throws SQLException {
+        EntrcApi.eal.add("REQUEST: Got data: item_id("+item_id+") shelf("+shelf+")");
+        EntrcApi.eal.add("REQUEST FROM SHELF: "+shelf);
+        EntrcApi.eal.add("TYPE: STATUS_ITEM");
+        EntrCoordinator_Event ece = new EntrCoordinator_Event(0,item_id,shelf);
+        Database_APIController dac = new Database_APIController(EntrcApi.database);
+        if ( dac.check_apicode(app_code) ){
+            EntrcApi.eal.add("APPCODE - CHECK - SUCCESS");
+            ece.status_item(EntrcApi.database);
+            EntrcApi.eal.add("Returned item status");
+        }
+        else{
+            EntrcApi.eal.add("APPCODE - CHECK - FAILED");
+            ece = new EntrCoordinator_Event(0,item_id,shelf);
+            ece.flag = -1;
+            ece.item_get_code = "worker_error";
+            EntrcApi.eal.add("ITEM_ENGINE_CODE: "+ece.item_get_code);
+        }
+        return ece;
+
+    }
+
+    @GetMapping("/entrcoordinator-item-details/{shelf}/{app_code}/{item_id}")
+    public Item_Object get_item_details(@PathVariable String shelf,@PathVariable String app_code,@PathVariable int item_id) throws SQLException {
+        EntrcApi.eal.add("REQUEST: Got data: item_id("+item_id+") shelf("+shelf+")");
+        EntrcApi.eal.add("REQUEST FROM SHELF: "+shelf);
+        EntrcApi.eal.add("TYPE: DETAILS_ITEM");
+        Item_Object io = new Item_Object();
+        Database_APIController dac = new Database_APIController(EntrcApi.database);
+        Database_Item_Coordinator dic = new Database_Item_Coordinator(EntrcApi.database);
+        if (dac.check_apicode(app_code)){
+            EntrcApi.eal.add("APPCODE - CHECK - SUCCESS");
+            EntrCoordinator_Item eci = new EntrCoordinator_Item(dic);
+            io = eci.get_item(item_id);
+            if ( io == null ){
+                EntrcApi.eal.add("Item not found");
+                io = new Item_Object();
+                io.flag = -3;
+            }
+            else{
+                EntrcApi.eal.add("Item found, data loaded");
+                io.flag = 1;
+            }
+        }
+        else{
+            EntrcApi.eal.add("APPCODE - CHECK - FAILED");
+            io.flag = -1;
+        }
+        return io;
+    }
+
     /**
      * Function for getting item from database
      * @param shelf

@@ -148,6 +148,25 @@ public class EntrCoordinator_Event {
             // item not on logged on shelf worker
             item_get_code = "no_item";
         }
+    }
 
+    /**
+     * Function for getting status of item
+     * @param database
+     */
+    public void status_item(Database_Connector database) throws SQLException {
+        Database_Item_Coordinator dic = new Database_Item_Coordinator(database);
+        EntrCoordinator_Item eci = new EntrCoordinator_Item(dic);
+        switch( eci.check_state(item_id) ){
+            case -2:
+                item_get_code = "item_shelf";
+                break;
+            case -3:
+                item_get_code = "no_item";
+                break;
+            default:
+                item_get_code = "item_taken:"+eci.check_state(item_id);
+                break;
+        }
     }
 }

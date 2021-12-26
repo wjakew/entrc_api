@@ -130,7 +130,7 @@ public class EntrCoordinator_Item {
     }
 
     /**
-     * Function for
+     * Function for setting item to worker state
      * @param entrc_ic_item
      * @param worker_id
      * @return

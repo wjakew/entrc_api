@@ -26,14 +26,24 @@ public class Item_Object {
      entrc_ic_item_desc VARCHAR(100),
      */
 
-    int entrc_ic_item_id;
-    int entrc_ic_drawer_id;
-    int entrc_ic_category_id;
-    int admin_id;
-    int worker_id;
-    String entrc_ic_item_name;
-    String entrc_ic_item_desc;
-    boolean new_object;
+    /**
+     * flag return codes:
+     * 1  - success
+     * 0  - object not initialized
+     * -1 - wrong app_code
+     * -2 - database error
+     * -3 - item not found
+     */
+    public int flag;
+
+    public int entrc_ic_item_id;
+    public int entrc_ic_drawer_id;
+    public int entrc_ic_category_id;
+    public int admin_id;
+    public int worker_id;
+    public String entrc_ic_item_name;
+    public String entrc_ic_item_desc;
+    public boolean new_object;
     /**
      * Constructor with database
      * @param rs
@@ -47,6 +57,7 @@ public class Item_Object {
         entrc_ic_item_name = rs.getString("entrc_ic_item_name");
         entrc_ic_item_desc = rs.getString("entrc_ic_item_desc");
         new_object = false;
+        flag = 1;
     }
     /**
      * Constructor
@@ -60,6 +71,7 @@ public class Item_Object {
         entrc_ic_item_name = "";
         entrc_ic_item_desc = "";
         new_object = true;
+        flag = 0;
     }
 
     /**
