@@ -39,6 +39,7 @@ drop table if exists ADMIN_PRIVILAGES;
 drop table if exists TT_GENERATED;
 drop table if exists TT_TEMPLATE;
 drop table if exists ANNOUNCEMENT;
+drop table if exists ADMIN_CODES;
 drop table if exists ADMIN_DATA;
 drop table if exists BARCODE_DATA;
 drop table if exists PHOTO_LIB;
@@ -98,7 +99,7 @@ worker_name VARCHAR(50),
 worker_surname VARCHAR(100),
 worker_pin VARCHAR(4),
 worker_position VARCHAR(20)
-);
+)auto_increment = 2000;
 -- table for creating worker groups
 CREATE TABLE USER_GROUPS
 (
@@ -155,6 +156,16 @@ admin_password VARCHAR(150),
 admin_email VARCHAR(50),
 admin_level INT,
 admin_active INT
+);
+-- table for storing one-time codes
+CREATE TABLE ADMIN_CODES
+(
+    admin_codes_id INT PRIMARY KEY AUTO_INCREMENT,
+    admin_id INT,
+    admin_code_data VARCHAR(10),
+    admin_code_time TIMESTAMP,
+
+    CONSTRAINT fk_admincodes FOREIGN KEY (admin_id) REFERENCES ADMIN_DATA(admin_id)
 );
 -- table for storing templates for timetable
 CREATE TABLE TT_TEMPLATE
@@ -453,7 +464,7 @@ VALUES
 INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES
-("DATABASEVERSION","132");
+("DATABASEVERSION","133");
 INSERT INTO PROGRAMCODES
 (programcodes_key,programcodes_value)
 VALUES

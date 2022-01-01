@@ -159,10 +159,13 @@ public class EntrCoordinator_Event {
         EntrCoordinator_Item eci = new EntrCoordinator_Item(dic);
         switch( eci.check_state(item_id) ){
             case -2:
-                item_get_code = "item_shelf";
+                item_get_code = "no_item";
                 break;
             case -3:
-                item_get_code = "no_item";
+                item_get_code = "database_error";
+                break;
+            case -1:
+                item_get_code = "item_shelf";
                 break;
             default:
                 item_get_code = "item_taken:"+eci.check_state(item_id);
