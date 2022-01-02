@@ -75,6 +75,7 @@ public class EntrCoordinator_Event {
                         {
                             // authorization granted by group linked with one of the drawers
                             authorization = database.get_worker_data(worker_pin);
+                            worker_id = database.get_worker_id_bypin(worker_pin);
                             EntrcApi.eal.add("USER "+authorization+" AUTHORIZED ON GROUP WITH DRAWER");
                             break;
                         }
@@ -83,6 +84,7 @@ public class EntrCoordinator_Event {
                             // trying to authorize on EIC group
                             if ( dg.check_user_group(database.get_worker_id_bypin(worker_pin),1) == 1){
                                 authorization = database.get_worker_data(worker_pin);
+                                worker_id = database.get_worker_id_bypin(worker_pin);
                                 EntrcApi.eal.add("USER "+authorization+" AUTHORIZED ON EIC GROUP");
                                 break;
                             }
